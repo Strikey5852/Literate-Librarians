@@ -2,6 +2,7 @@ package com.strikey.mixin;
 
 import com.strikey.util.LecternBookHelper;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -42,7 +43,13 @@ public class EnchantBookForEmeraldsMixin {
             return;
         }
         ItemStack book = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(choice.enchantment(), choice.level()));
-        int cost = 5 + 3 * choice.level();
+        int cost = 2 + random.nextInt(5 + choice.level() * 10) + 3 * choice.level();
+        if (choice.enchantment().is(EnchantmentTags.DOUBLE_TRADE_PRICE)) {
+            cost *= 2;
+        }
+        if (cost > 64) {
+            cost = 64;
+        }
         MerchantOffer offer = new MerchantOffer(new ItemCost(Items.EMERALD, cost), Optional.of(new ItemCost(Items.BOOK, 1)), book, 12, villagerXp, 0.2F);
         cir.setReturnValue(offer);
         cir.cancel();
