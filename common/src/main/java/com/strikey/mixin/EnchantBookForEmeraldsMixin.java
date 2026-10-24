@@ -32,7 +32,7 @@ public class EnchantBookForEmeraldsMixin {
         var choice = choiceOpt.get();
         ItemStack book = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(choice.enchantment(), choice.level()));
         int cost = 5 + 3 * choice.level();
-        MerchantOffer offer = new MerchantOffer(new ItemCost(Items.EMERALD, cost), book, 12, villagerXp, 0.2F);
+        MerchantOffer offer = new MerchantOffer(new ItemCost(Items.EMERALD, cost), Optional.of(new ItemCost(Items.BOOK, 1)), book, 12, villagerXp, 0.2F);
         cir.setReturnValue(offer);
         cir.cancel();
     }
