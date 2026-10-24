@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.strikey.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [],
+  "mixins": [
+    "EnchantBookForEmeraldsMixin",
+    "LecternBlockMixin",
+    "LecternBlockEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

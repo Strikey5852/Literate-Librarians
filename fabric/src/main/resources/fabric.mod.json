@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "literate_librarians",
+  "version": "${version}",
+  "name": "Literate Librarians",
+  "description": "Librarians can read now, making them more likely to offer the book on their lectern.",
+  "authors": [
+    "Strikey"
+  ],
+  "license": "GPLv3.0",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.strikey.fabric.LiterateLibrariansFabric"
+    ]
+  },
+  "mixins": [
+    "literate_librarians.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.20.1",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
