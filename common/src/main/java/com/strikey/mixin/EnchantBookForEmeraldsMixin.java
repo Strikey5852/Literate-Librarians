@@ -1,5 +1,6 @@
 package com.strikey.mixin;
 
+import com.strikey.Config;
 import com.strikey.util.LecternBookHelper;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.tags.EnchantmentTags;
@@ -23,14 +24,15 @@ import java.util.Optional;
 public class EnchantBookForEmeraldsMixin {
     @Shadow private int villagerXp;
     @Shadow private net.minecraft.tags.TagKey<net.minecraft.world.item.enchantment.Enchantment> tradeableEnchantments;
-    @Shadow private int minLevel;
-    @Shadow private int maxLevel;
 
     @Inject(method = "getOffer", at = @At("HEAD"), cancellable = true)
     private void literate$preferLecternEnchantment(net.minecraft.world.entity.Entity entity, net.minecraft.util.RandomSource random, CallbackInfoReturnable<MerchantOffer> cir) {
         if (!(entity instanceof Villager villager)) return;
         Optional<LecternBookHelper.EnchantmentChoice> choiceOpt =
-                LecternBookHelper.getLecternEnchantment(villager, tradeableEnchantments, minLevel, maxLevel);
+                LecternBookHelper.getLecternEnchantment(villager, tradeableEnchantments);
+        if (choiceOpt.isEmpty() && Config.get().isEnableNonTradeableEnchants()) {
+            choiceOpt = LecternBookHelper.getLecternNonTradeableEnchantment(villager, tradeableEnchantments);
+        }
         if (choiceOpt.isEmpty()) return;
         var choice = choiceOpt.get();
         // Skip the override if the villager already has the lectern enchant as a trade

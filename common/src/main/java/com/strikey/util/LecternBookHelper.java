@@ -20,7 +20,15 @@ import java.util.Optional;
 public final class LecternBookHelper {
     private LecternBookHelper() {}
 
-    public static Optional<EnchantmentChoice> getLecternEnchantment(Villager villager, TagKey<Enchantment> tradeable, int minLevel, int maxLevel) {
+    public static Optional<EnchantmentChoice> getLecternEnchantment(Villager villager, TagKey<Enchantment> tradeable) {
+        return getLecternEnchantmentInternal(villager, tradeable, true);
+    }
+
+    public static Optional<EnchantmentChoice> getLecternNonTradeableEnchantment(Villager villager, TagKey<Enchantment> tradeable) {
+        return getLecternEnchantmentInternal(villager, tradeable, false);
+    }
+
+    private static Optional<EnchantmentChoice> getLecternEnchantmentInternal(Villager villager, TagKey<Enchantment> tradeable, boolean checkTag) {
         var brain = villager.getBrain();
         var jobSite = brain.getMemory(MemoryModuleType.JOB_SITE);
         if (jobSite.isEmpty()) return Optional.empty();
@@ -39,10 +47,9 @@ public final class LecternBookHelper {
         Holder<Enchantment> holder = entry.getKey();
         int level = entry.getIntValue();
 
-        if (!holder.is(tradeable)) return Optional.empty();
-        if (level < minLevel || level > maxLevel) return Optional.empty();
+        if (checkTag && !holder.is(tradeable)) return Optional.empty();
+        if (level > holder.value().getMaxLevel()) return Optional.empty();
         int clamped = Math.min(level, holder.value().getMaxLevel());
-        if (clamped < minLevel) return Optional.empty();
         return Optional.of(new EnchantmentChoice(holder, clamped));
     }
 
