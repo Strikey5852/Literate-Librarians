@@ -44,6 +44,9 @@ public class EnchantBookForEmeraldsMixin {
                 })) {
             return;
         }
+        if (random.nextFloat() >= Config.get().getOverrideChance()) {
+            return;
+        }
         ItemStack book = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(choice.enchantment(), choice.level()));
         int cost = 2 + random.nextInt(5 + choice.level() * 10) + 3 * choice.level();
         if (choice.enchantment().is(EnchantmentTags.DOUBLE_TRADE_PRICE)) {

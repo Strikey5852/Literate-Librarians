@@ -10,11 +10,14 @@ import java.nio.file.Path;
 public final class Config {
     public static final String KEY_ENABLE_NON_TRADEABLE = "enableNonTradeableEnchants";
     public static final boolean DEFAULT_ENABLE_NON_TRADEABLE = true;
+    public static final String KEY_OVERRIDE_CHANCE = "overrideChance";
+    public static final float DEFAULT_OVERRIDE_CHANCE = 1.0f;
 
     private static volatile Config instance;
 
     private final Path configPath;
     private boolean enableNonTradeableEnchants = DEFAULT_ENABLE_NON_TRADEABLE;
+    private float overrideChance = DEFAULT_OVERRIDE_CHANCE;
 
     public static Config get() {
         return instance;
@@ -33,6 +36,10 @@ public final class Config {
         return enableNonTradeableEnchants;
     }
 
+    public float getOverrideChance() {
+        return overrideChance;
+    }
+
     private void load() {
         try {
             if (Files.exists(configPath)) {
@@ -47,6 +54,12 @@ public final class Config {
                             String value = parts[1].trim().replace("\"", "").replace("'", "").trim();
                             if (key.equals(KEY_ENABLE_NON_TRADEABLE)) {
                                 enableNonTradeableEnchants = Boolean.parseBoolean(value);
+                            } else if (key.equals(KEY_OVERRIDE_CHANCE)) {
+                                try {
+                                    overrideChance = Math.clamp(Float.parseFloat(value), 0.0f, 1.0f);
+                                } catch (NumberFormatException e) {
+                                    // Keep default if invalid
+                                }
                             }
                         }
                     }
@@ -66,6 +79,8 @@ public final class Config {
                 StringBuilder sb = new StringBuilder();
                 sb.append("# Enable non-tradeable enchantments (e.g., Swift Sneak, Soul Speed)\n");
                 sb.append("enableNonTradeableEnchants = ").append(DEFAULT_ENABLE_NON_TRADEABLE).append("\n");
+                sb.append("# Chance (0.0 to 1.0) for the lectern book to appear as a trade\n");
+                sb.append("overrideChance = ").append(DEFAULT_OVERRIDE_CHANCE).append("\n");
                 out.write(sb.toString().getBytes(StandardCharsets.UTF_8));
             }
         } catch (IOException e) {
