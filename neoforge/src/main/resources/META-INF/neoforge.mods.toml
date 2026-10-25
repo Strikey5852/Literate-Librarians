@@ -8,7 +8,7 @@ version = "${version}"
 displayName = "Literate Librarians"
 authors = "Strikey"
 description = '''
-Librarians can read now, making them more likely to offer the book on their lectern.
+Librarians can read now, making them more likely to offer the enchanted book on their lectern.
 '''
 
 [[dependencies.literate_librarians]]
