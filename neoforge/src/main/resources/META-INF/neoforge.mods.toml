@@ -6,6 +6,7 @@ license = "GPLv3.0"
 modId = "literate_librarians"
 version = "${version}"
 displayName = "Literate Librarians"
+icon = "icon.png"
 authors = "Strikey"
 description = '''
 Librarians can read now, making them more likely to offer the enchanted book on their lectern.
